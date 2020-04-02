@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <title>Shop Scrapper</title>
+</head>
+<body>
+<form ction="#" th:object="${data}" method="POST" enctype="utf8">
+    <div class="form-group">
+        <label>WebShop Name</label>
+        <input type="text" class="form-control" th:field="*{shop}">
+    </div>
+
+    <div class="form-group">
+        <label for="exampleFormControlSelect1">Select Category</label>
+        <select class="form-control" id="exampleFormControlSelect1" name="Category">
+            <option th:each="category : ${T(pl.widulinski.webcrawlertool.enums.Categories).values()}"
+                    th:value="${category}" th:text="${category.displayValue}" th:field="*{category}"></option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label>Url To Category</label>
+        <input type="text" class="form-control" id="urlToCategory" th:field="*{urlToCategory}">
+    </div>
+    <div class="form-group">
+        <label>xPath Of LastPage</label>
+        <input type="text" class="form-control" id="xpathOfLastPage" th:field="*{xpathOfLastPage}">
+    </div>
+    <div class="form-group">
+        <label>xPath To Article Element</label>
+        <input type="text" class="form-control" id="xpathToArticleElement" th:field="*{xpathToArticleElement}">
+    </div>
+    <div class="form-group">
+        <label>xPath To Article Name</label>
+        <input type="text" class="form-control" id="xpathToArticleName" th:field="*{xpathToArticleName}">
+    </div>
+    <div class="form-group">
+        <label>xPath To Article Href</label>
+        <input type="text" class="form-control" id="xpathToArticleHref" th:field="*{xpathToArticleHref}">
+    </div>
+    <div class="form-group">
+        <label>xPath To Article Price</label>
+        <input type="text" class="form-control" id="xpathToArticlePrice" th:field="*{xpathToArticlePrice}">
+    </div>
+
+    <button type="submit">submit</button>
+</form>
+
+<form method="get" action="/">
+<div style = "position:relative; left:10px; top:90px;" class="twoToneCenter">
+    <button >Powrót do Menu</button>
+</div>
+</form>
+
+
+</body>
+</html>

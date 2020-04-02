@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <title>Shop Scrapper</title>
+</head>
+<body>
+<form action="#" th:object="${result}" method="POST" enctype="utf8">
+    <label for="country">Select Shop</label>
+    <select class="form-control" name="Shops" id="country">
+        <option th:each="elem : ${shopList.keySet()}"
+                th:value="${elem}" th:text="${elem}" th:field="*{shop}"></option>
+    </select>
+
+    <label for="country">Select Category</label>
+    <select th:field="*{categories}" th:value="${result.categories}" class="form-control" th:id="region">
+    </select>
+
+</form>
+</body>
+</html>

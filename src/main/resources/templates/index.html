@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css'><link rel="stylesheet" href="./style.css">
+
+    <title>Shop Scrapper</title>
+</head>
+<script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+
+<body>
+<form action="/" th:object="${result}" method="POST" enctype="utf8">
+    <label for="selectShop">Select Shop</label>
+    <select class="form-control" name="shop" id="selectShop">
+        <option th:value="0" text="Please Select">please select</option>
+        <option th:each="shop : ${shopList.keySet()}"
+                th:field="*{shop}" th:text="${shop.toString()}" th:value="${shop}">wybierz sklep</option>
+    </select>
+
+    <script type="text/javascript">
+
+        function sendAjaxRequest() {
+            let select = "<option value = 'please select shop first'>please select</option>";
+            var country = $("#selectShop").val();
+            $.get( "/regions?country=" + country, function( data ) {
+                $("#region").empty();
+                $("#region").append(select);
+                data.forEach(function(item, i) {
+                    var option = "<option value = " + item + ">" + item +  "</option>";
+                    $("#region").append(option);
+                });
+            });
+        }
+
+        </script>
+
+
+        <script>
+        $(document).ready(function() {
+            $("#selectShop").change(function() {
+                sendAjaxRequest();
+            });
+        });
+      </script>
+
+    <label for="region">Select Category</label>
+    <select class="form-control" id="region" th:field="*{categories}" th:value="${shopList.values()}">
+    </select>
+
+
+    <div style = "position:relative; left:10px; top:30px;" class="twoToneCenter">
+
+        <button onclick="clickButton()" class="twoToneButton">Rozpocznij</button>
+    </div>
+
+</form>
+
+<form method="get" action="/adminMenu">
+    <div style = "position:relative; left:10px; top:60px;" class="twoToneCenter">
+        <button >Dodaj Sklep</button>
+    </div>
+</form>
+
+<script>
+   function clickButton() {
+           alert("Rozpoczęto skrobanie. Proces może potrwać kilka minut");
+   }
+</script>
+
+</body>
+</html>

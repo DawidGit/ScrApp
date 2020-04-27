@@ -1,8 +1,7 @@
 package pl.widulinski.webcrawlertool;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -12,6 +11,8 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.event.annotation.AfterTestClass;
+import org.springframework.test.context.event.annotation.BeforeTestExecution;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import pl.widulinski.webcrawlertool.FoundWebElements.FoundWebElement;
@@ -25,10 +26,11 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
 import static org.hamcrest.Matchers.containsString;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -36,6 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @AutoConfigureMockMvc
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @Slf4j
 @SpringBootTest
 class ScrAppApplicationTests {
@@ -43,8 +46,8 @@ class ScrAppApplicationTests {
     @Autowired
     CreateExcel createExcel;
 
-    @Autowired
-    private PreparedDataToSrchDto preparedDataToSrchDto;
+
+    private final PreparedDataToSrchDto preparedDataToSrchDto = new PreparedDataToSrchDto();
 
     @Autowired
     private DataToScrapRepository dataToScrapRepository;
@@ -52,8 +55,18 @@ class ScrAppApplicationTests {
     @Autowired
     private MockMvc mockMvc;
 
+    String pattern = "dd.MM.yyyy";
+    String dateInStringTest = new SimpleDateFormat(pattern).format(new Date());
+    Set<FoundWebElement> webElementsList = new HashSet<>();
+    FoundWebElement webElementTest = new FoundWebElement();
+    PreparedDataToSrchDto preparedDataToSearchTest = preparedDataToSrchDto;
+    Map<String, DataToScrap> elements = new HashMap<>();
+    private WebDriver driver;
+
+
 
     @Test
+    @Order(2)
     public void urlControllerTest() throws Exception {
         mockMvc
                 .perform(get("/"))
@@ -69,55 +82,62 @@ class ScrAppApplicationTests {
     }
 
 
-    @Test
-    public void urlServiceTest() throws Exception {
 
-        //given
+    @Test
+    @Order(3)
+    public void webDriverTest() {
 
         System.setProperty("webdriver.chrome.driver", "C:\\chromedriver.exe");
         ChromeOptions options = new ChromeOptions();
         options.addArguments("headless");
-        WebDriver driver = new ChromeDriver(options);
+        this.driver = new ChromeDriver(options);
         String baseUrl = "https://www.allegro.pl";
         driver.get(baseUrl);
 
-        Thread.sleep(3000);
+        driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
 
         if (driver.findElement(By.xpath("//button[text()='przejdź dalej' and @class='_13q9y _8hkto _11eg6 _7qjq4 _ey68j']")).isEnabled()) {
             driver.findElement(By.xpath("//button[text()='przejdź dalej' and @class='_13q9y _8hkto _11eg6 _7qjq4 _ey68j']")).click();
         }
 
+        assertEquals("Allegro - atrakcyjne ceny i 100% bezpieczeństwa", driver.getTitle());  //testing does opened page using webdriver
 
-        //when
 
-        Map<String, DataToScrap> elements = new HashMap<>();
+        driver.close();
+    }
+
+
+    @Test
+    @Order(4)
+    public void getDataFromRepositoryTest() {
+
 
         for (DataToScrap element : dataToScrapRepository.findAll()) {
 
-            elements.put(element.getShop() + element.getCategory() + " " + element.getUrlToCategory(), element);
-
+            elements.put(element.getShop() + "_" + element.getCategory(), element);
         }
+        assertFalse(elements.isEmpty());
+    }
 
 
-        //then
+    @Test
+    @Order(5)
+    public void getLastPageTest() {
+
+        System.setProperty("webdriver.chrome.driver", "C:\\chromedriver.exe");
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("headless");
+        this.driver = new ChromeDriver(options);
 
         elements.forEach((key, value) -> {
 
-
             driver.get(value.getUrlToCategory() + "1");
 
-            try {
-                Thread.sleep(3000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-
+            driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
 
             WebElement webElement = driver.findElement(By.xpath(value.getXpathOfLastPage().replace("|", "'")));
 
             assertTrue(webElement.isEnabled());
-
 
         });
 
@@ -125,31 +145,60 @@ class ScrAppApplicationTests {
     }
 
     @Test
-    public void createExcelTest() throws IOException, InvalidFormatException {
+    @Order(6)
+    public void scrapArticleDataTest() {
 
-        //given
-        Set<FoundWebElement> webElementsList = new HashSet<>();
-        FoundWebElement webElementTest = new FoundWebElement();
-        PreparedDataToSrchDto preparedDataToSearchTest = preparedDataToSrchDto;
-        String pattern = "dd.MM.yyyy";
-        String dateInStringTest = new SimpleDateFormat(pattern).format(new Date());
+        System.setProperty("webdriver.chrome.driver", "C:\\chromedriver.exe");
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("headless");
+        this.driver = new ChromeDriver(options);
+
+        DataToScrap foundWebElement = dataToScrapRepository.findByShopAndCategory("Allegro", Categories.ELECTRONICS);
+
+        driver.get(foundWebElement.getUrlToCategory() + "1");
+
+
+
+        //replacing signs '|' to '''
+        String replacedArticleElement = foundWebElement.getXpathToArticleElement().replace("|", "'");
+        String replacedArticleName = foundWebElement.getXpathToArticleName().replace("|", "'");
+        String replacedArticleHref = foundWebElement.getXpathToArticleHref().replace("|", "'");
+        String replacedArticlePrice = foundWebElement.getXpathToArticlePrice().replace("|", "'");
+        //end of replacing
+
+        List<WebElement> webElementsList = driver.findElements(By.xpath(replacedArticleElement));
+
+
+        for (WebElement element : webElementsList
+        ) {
+
+            webElementTest.setName(element.findElement(By.xpath("." + replacedArticleName)).getText());
+            webElementTest.setLink(element.findElement(By.xpath("." + replacedArticleHref)).getAttribute("href"));
+            webElementTest.setPrice(element.findElement(By.xpath("." + replacedArticlePrice)).getText());
+
+            assertFalse(webElementTest.getName().isEmpty());
+            assertFalse(webElementTest.getLink().isEmpty());
+            //assertFalse(webElementTest.getPrice().isEmpty());
+        }
+
+        driver.close();
+
+    }
+
+    @Test
+    @Order(7)
+    public void createExcelTest() throws IOException {
 
         preparedDataToSrchDto.setShop("ShopTest");
 
         preparedDataToSrchDto.setCategories(Categories.COMPUTERS);
 
-        webElementTest.setName("ProductTest");
-        webElementTest.setLink("www.onet.pl");
-        webElementTest.setPrice("1,99");
-        webElementsList.add(webElementTest);
 
-        //when
         Stream<FoundWebElement> stream = webElementsList.stream();
-        createExcel.createNewFile(stream,preparedDataToSearchTest.getShop(), preparedDataToSrchDto.getCategories());
+        createExcel.createNewFile(stream, preparedDataToSearchTest.getShop(), preparedDataToSrchDto.getCategories());
 
-        File file = new File(preparedDataToSrchDto.getShop() + "_" + preparedDataToSrchDto.getCategories() +"_"+ dateInStringTest + ".xlsx");
+        File file = new File(preparedDataToSrchDto.getShop() + "_" + preparedDataToSrchDto.getCategories() + "_" + dateInStringTest + ".xlsx");
 
-        //then
 
         assertTrue(file.exists());
     }

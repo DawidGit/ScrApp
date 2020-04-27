@@ -3,7 +3,6 @@ package pl.widulinski.webcrawlertool.urls;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,11 +26,16 @@ import java.util.Set;
 public class URLController {
 
 
-    @Autowired
-    private DataToScrapService dataToScrapService;
 
-    @Autowired
-    private SearchDataService searchDataService;
+    private final DataToScrapService dataToScrapService;
+
+
+    private final SearchDataService searchDataService;
+
+    public URLController(DataToScrapService dataToScrapService, SearchDataService searchDataService) {
+        this.dataToScrapService = dataToScrapService;
+        this.searchDataService = searchDataService;
+    }
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {

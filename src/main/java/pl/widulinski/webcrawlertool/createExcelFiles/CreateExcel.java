@@ -1,14 +1,11 @@
 package pl.widulinski.webcrawlertool.createExcelFiles;
 
-
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Component;
 import pl.widulinski.webcrawlertool.FoundWebElements.FoundWebElement;
 import pl.widulinski.webcrawlertool.enums.Categories;
-import pl.widulinski.webcrawlertool.searchData.PreparedDataToSrchDto;
-
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -20,11 +17,11 @@ import java.util.stream.Stream;
 public class CreateExcel {
 
 
-    private static String[] columns = {"name", "price", "link"};
+    private static final String[] columns = {"name", "price", "link"};
 
 
 
-    public void createNewFile(Stream<FoundWebElement> stream, String shop, Categories category) throws IOException, InvalidFormatException {
+    public void createNewFile(Stream<FoundWebElement> stream, String shop, Categories category) throws IOException {
 
         Workbook workbook = new XSSFWorkbook(); // new HSSFWorkbook() for generating `.xls` file
 

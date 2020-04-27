@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
 
@@ -57,7 +58,7 @@ public class URLService {
 
         driver.get(firstPageOfCategory + "1");
 
-        Thread.sleep(3000);
+        driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
 
         if (foundWebElement.getShop().equals("Allegro")) {
             driver.findElement(By.xpath("//button[text()='przejdź dalej' and @class='_13q9y _8hkto _11eg6 _7qjq4 _ey68j']")).click();
@@ -66,7 +67,8 @@ public class URLService {
         try{
         if (driver.findElement(By.xpath("//div[@data-analytics-interaction-value='regular']")).isDisplayed()){
             driver.findElement(By.xpath("//div[@data-analytics-interaction-value='regular']")).click();
-            Thread.sleep(3000); } } catch (NoSuchElementException e) {e.printStackTrace();}
+            driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+        } } catch (NoSuchElementException e) {e.printStackTrace();}
 
         log.info("############################# Strona wybranego sklepu załadowana ###########################");
 
@@ -100,8 +102,7 @@ public class URLService {
 
                 foundElement.setName(element.findElement(By.xpath("." + replacedArticleName)).getText());
                 foundElement.setLink(element.findElement(By.xpath("." + replacedArticleHref)).getAttribute("href"));
-                String pricePath = element.findElement(By.xpath("." + replacedArticlePrice)).getText();
-                foundElement.setPrice(pricePath);
+                foundElement.setPrice(element.findElement(By.xpath("." + replacedArticlePrice)).getText());
 
                 log.info("Scrap...");
                 foundElements.add(foundElement);

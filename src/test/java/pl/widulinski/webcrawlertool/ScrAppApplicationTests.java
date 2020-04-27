@@ -9,6 +9,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.actuate.autoconfigure.metrics.MetricsProperties;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.event.annotation.AfterTestClass;
@@ -61,8 +62,6 @@ class ScrAppApplicationTests {
     FoundWebElement webElementTest = new FoundWebElement();
     PreparedDataToSrchDto preparedDataToSearchTest = preparedDataToSrchDto;
     Map<String, DataToScrap> elements = new HashMap<>();
-    private WebDriver driver;
-
 
 
     @Test
@@ -90,7 +89,7 @@ class ScrAppApplicationTests {
         System.setProperty("webdriver.chrome.driver", "C:\\chromedriver.exe");
         ChromeOptions options = new ChromeOptions();
         options.addArguments("headless");
-        this.driver = new ChromeDriver(options);
+        WebDriver driver = new ChromeDriver(options);
         String baseUrl = "https://www.allegro.pl";
         driver.get(baseUrl);
 
@@ -127,7 +126,7 @@ class ScrAppApplicationTests {
         System.setProperty("webdriver.chrome.driver", "C:\\chromedriver.exe");
         ChromeOptions options = new ChromeOptions();
         options.addArguments("headless");
-        this.driver = new ChromeDriver(options);
+        WebDriver driver = new ChromeDriver(options);
 
         elements.forEach((key, value) -> {
 
@@ -151,7 +150,7 @@ class ScrAppApplicationTests {
         System.setProperty("webdriver.chrome.driver", "C:\\chromedriver.exe");
         ChromeOptions options = new ChromeOptions();
         options.addArguments("headless");
-        this.driver = new ChromeDriver(options);
+        WebDriver driver = new ChromeDriver(options);
 
         DataToScrap foundWebElement = dataToScrapRepository.findByShopAndCategory("Allegro", Categories.ELECTRONICS);
 
@@ -178,7 +177,7 @@ class ScrAppApplicationTests {
 
             assertFalse(webElementTest.getName().isEmpty());
             assertFalse(webElementTest.getLink().isEmpty());
-            //assertFalse(webElementTest.getPrice().isEmpty());
+            assertFalse(webElementTest.getPrice().isEmpty());
         }
 
         driver.close();

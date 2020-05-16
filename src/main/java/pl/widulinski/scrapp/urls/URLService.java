@@ -1,74 +1,72 @@
-package pl.widulinski.webcrawlertool.urls;
+package pl.widulinski.scrapp.urls;
 
-import com.google.gson.Gson;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.stereotype.Service;
-import pl.widulinski.webcrawlertool.FoundWebElements.FoundWebElement;
-import pl.widulinski.webcrawlertool.createExcelFiles.CreateExcel;
-import pl.widulinski.webcrawlertool.enums.Categories;
-import pl.widulinski.webcrawlertool.webDataToScrap.DataToScrap;
-import pl.widulinski.webcrawlertool.webDataToScrap.DataToScrapRepository;
-
-
+import pl.widulinski.scrapp.FoundWebElements.FoundWebElement;
+import pl.widulinski.scrapp.createExcel.CreateExcel;
+import pl.widulinski.scrapp.enums.Categories;
+import pl.widulinski.scrapp.webDataToScrap.DataToScrap;
+import pl.widulinski.scrapp.webDataToScrap.DataToScrapRepository;
+import pl.widulinski.scrapp.webDriver.DriverBuilder;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
 
+@EqualsAndHashCode(callSuper = true)
 @Service
 @Data
 @Slf4j
-public class URLService {
+public class URLService extends DriverBuilder {
 
-    public URLService(CreateExcel createExcel, DataToScrapRepository dataToScrapRepository) {
-        this.createExcel = createExcel;
-        this.dataToScrapRepository = dataToScrapRepository;
-    }
-
+    private int quantityOfPages = 1;
 
     private CreateExcel createExcel;
 
-    private DataToScrapRepository dataToScrapRepository;
+    private final DataToScrapRepository dataToScrapRepository;
 
 
-    public void findElement(String shop, Categories category) throws InterruptedException, IOException, InvalidFormatException {
+    public void findElement(String shop, Categories category) throws IOException {
 
+        createExcel = new CreateExcel();
+
+        String fileName = shop + "_" + category.getDisplayValue() + "_";
 
         DataToScrap foundWebElement = dataToScrapRepository.findByShopAndCategory(shop, category);
+
         //  String pathToCategory, String pathToLastPageNumber
-        System.setProperty("webdriver.chrome.driver", "C:\\chromedriver.exe");
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("headless");
-        WebDriver driver = new ChromeDriver(options);
-        String baseUrl = "https://www.google.com";
-        driver.get(baseUrl);
 
         String firstPageOfCategory = foundWebElement.getUrlToCategory();
 
-        driver.get(firstPageOfCategory + "1");
+        WebDriver driver = setUpChromeDriver();
 
-        driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+
+        driver.get(firstPageOfCategory);
+
+        ExpectedCondition<Boolean> expectation = driver1 -> ((JavascriptExecutor) driver).executeScript("return document.readyState").toString().equals("complete");
+
+        wait.until(expectation);
 
         if (foundWebElement.getShop().equals("Allegro")) {
             driver.findElement(By.xpath("//button[text()='przejdź dalej' and @class='_13q9y _8hkto _11eg6 _7qjq4 _ey68j']")).click();
         }
 
-        try{
-        if (driver.findElement(By.xpath("//div[@data-analytics-interaction-value='regular']")).isDisplayed()){
-            driver.findElement(By.xpath("//div[@data-analytics-interaction-value='regular']")).click();
-            driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
-        } } catch (NoSuchElementException e) {e.printStackTrace();}
+        try {
+            if (driver.findElement(By.xpath("//div[@data-analytics-interaction-value='regular']")).isDisplayed()) {
+                driver.findElement(By.xpath("//div[@data-analytics-interaction-value='regular']")).click();
+                wait.until(expectation);
+            }
+        } catch (NoSuchElementException e) {
+            e.printStackTrace();
+        }
 
         log.info("############################# Strona wybranego sklepu załadowana ###########################");
 
@@ -84,7 +82,14 @@ public class URLService {
         //end of replacing
 
         String lastPage = driver.findElement(By.xpath(replacedLastPage)).getText();
-        int lastPageParsedToInt = Integer.parseInt(lastPage);
+
+        int lastPageParsedToInt;
+
+        if (quantityOfPages == 0) {
+            lastPageParsedToInt = Integer.parseInt(lastPage);
+        } else {
+            lastPageParsedToInt = quantityOfPages;
+        }
 
         log.info("ilość stron w kategorii: " + lastPage);
 
@@ -111,16 +116,14 @@ public class URLService {
 
         }
 
-        driver.close();
+        driver.quit();
 
         Stream<FoundWebElement> stream = foundElements.stream();
 
-        createExcel.createNewFile(stream, shop, category);
-
+        createExcel.printExcel(stream, fileName);
 
         log.info("Huraaa! znaleziono obiekty");
 
     }
-
 
 }

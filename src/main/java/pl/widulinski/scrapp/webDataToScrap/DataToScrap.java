@@ -1,9 +1,9 @@
-package pl.widulinski.webcrawlertool.webDataToScrap;
+package pl.widulinski.scrapp.webDataToScrap;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.stereotype.Component;
-import pl.widulinski.webcrawlertool.enums.Categories;
+import pl.widulinski.scrapp.enums.Categories;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;

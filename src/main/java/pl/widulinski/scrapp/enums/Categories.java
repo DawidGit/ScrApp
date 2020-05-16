@@ -1,4 +1,4 @@
-package pl.widulinski.webcrawlertool.enums;
+package pl.widulinski.scrapp.enums;
 
 public enum Categories {
 

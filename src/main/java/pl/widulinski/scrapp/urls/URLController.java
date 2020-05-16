@@ -1,4 +1,4 @@
-package pl.widulinski.webcrawlertool.urls;
+package pl.widulinski.scrapp.urls;
 
 
 import lombok.extern.slf4j.Slf4j;
@@ -9,12 +9,12 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-import pl.widulinski.webcrawlertool.enums.Categories;
-import pl.widulinski.webcrawlertool.searchData.DataToSearch;
-import pl.widulinski.webcrawlertool.searchData.PreparedDataToSrchDto;
-import pl.widulinski.webcrawlertool.searchData.SearchDataService;
-import pl.widulinski.webcrawlertool.webDataToScrap.DataToScrapDto;
-import pl.widulinski.webcrawlertool.webDataToScrap.DataToScrapService;
+import pl.widulinski.scrapp.enums.Categories;
+import pl.widulinski.scrapp.searchData.DataToSearch;
+import pl.widulinski.scrapp.searchData.PreparedDataToSrchDto;
+import pl.widulinski.scrapp.searchData.SearchDataService;
+import pl.widulinski.scrapp.webDataToScrap.DataToScrapDto;
+import pl.widulinski.scrapp.webDataToScrap.DataToScrapService;
 
 import javax.validation.Valid;
 import java.io.IOException;

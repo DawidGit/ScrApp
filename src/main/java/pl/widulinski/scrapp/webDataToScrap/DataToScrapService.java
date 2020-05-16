@@ -1,15 +1,13 @@
-package pl.widulinski.webcrawlertool.webDataToScrap;
+package pl.widulinski.scrapp.webDataToScrap;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 @Component
 public class DataToScrapService {
 
 
 
-private DataToScrapRepository dataToScrapRepository;
+private final DataToScrapRepository dataToScrapRepository;
 
     public DataToScrapService(DataToScrapRepository dataToScrapRepository) {
         this.dataToScrapRepository = dataToScrapRepository;

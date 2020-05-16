@@ -21,7 +21,7 @@
     <div class="form-group">
         <label for="exampleFormControlSelect1">Select Category</label>
         <select class="form-control" id="exampleFormControlSelect1" name="Category">
-            <option th:each="category : ${T(pl.widulinski.webcrawlertool.enums.Categories).values()}"
+            <option th:each="category : ${T(pl.widulinski.scrapp.enums.Categories).values()}"
                     th:value="${category}" th:text="${category.displayValue}" th:field="*{category}"></option>
         </select>
     </div>

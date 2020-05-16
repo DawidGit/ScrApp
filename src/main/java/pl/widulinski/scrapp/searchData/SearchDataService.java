@@ -1,12 +1,11 @@
-package pl.widulinski.webcrawlertool.searchData;
+package pl.widulinski.scrapp.searchData;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
-import pl.widulinski.webcrawlertool.enums.Categories;
-import pl.widulinski.webcrawlertool.urls.URLService;
-import pl.widulinski.webcrawlertool.webDataToScrap.DataToScrap;
-import pl.widulinski.webcrawlertool.webDataToScrap.DataToScrapRepository;
+import pl.widulinski.scrapp.enums.Categories;
+import pl.widulinski.scrapp.urls.URLService;
+import pl.widulinski.scrapp.webDataToScrap.DataToScrap;
+import pl.widulinski.scrapp.webDataToScrap.DataToScrapRepository;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -19,10 +18,10 @@ public class SearchDataService {
 
 
 
-    private DataToScrapRepository dataToScrapRepository;
+    private final DataToScrapRepository dataToScrapRepository;
 
 
-    private URLService urlService;
+    private final URLService urlService;
 
     public SearchDataService(DataToScrapRepository dataToScrapRepository, URLService urlService) {
         this.dataToScrapRepository = dataToScrapRepository;

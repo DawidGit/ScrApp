@@ -1,12 +1,10 @@
-package pl.widulinski.webcrawlertool.webDataToScrap;
+package pl.widulinski.scrapp.webDataToScrap;
 
-import io.micrometer.core.lang.NonNullApi;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import pl.widulinski.webcrawlertool.enums.Categories;
+import pl.widulinski.scrapp.enums.Categories;
 
 import java.util.List;
-import java.util.Set;
 
 
 @Repository

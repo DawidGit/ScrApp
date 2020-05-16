@@ -1,8 +1,10 @@
-package pl.widulinski.webcrawlertool.FoundWebElements;
+package pl.widulinski.scrapp.FoundWebElements;
 
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.stereotype.Component;
+
 
 
 @Data

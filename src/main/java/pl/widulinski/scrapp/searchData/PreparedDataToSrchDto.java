@@ -1,9 +1,7 @@
-package pl.widulinski.webcrawlertool.searchData;
+package pl.widulinski.scrapp.searchData;
 
 import lombok.Data;
-import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
-import pl.widulinski.webcrawlertool.enums.Categories;
+import pl.widulinski.scrapp.enums.Categories;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;

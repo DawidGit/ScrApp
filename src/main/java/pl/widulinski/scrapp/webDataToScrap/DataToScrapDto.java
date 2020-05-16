@@ -1,7 +1,6 @@
-package pl.widulinski.webcrawlertool.webDataToScrap;
+package pl.widulinski.scrapp.webDataToScrap;
 
-import org.springframework.stereotype.Component;
-import pl.widulinski.webcrawlertool.enums.Categories;
+import pl.widulinski.scrapp.enums.Categories;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;

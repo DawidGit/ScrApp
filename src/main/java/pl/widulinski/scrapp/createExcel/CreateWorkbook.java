@@ -1,29 +1,27 @@
-package pl.widulinski.webcrawlertool.createExcelFiles;
+package pl.widulinski.scrapp.createExcel;
 
-import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Component;
-import pl.widulinski.webcrawlertool.FoundWebElements.FoundWebElement;
-import pl.widulinski.webcrawlertool.enums.Categories;
-import java.io.FileOutputStream;
+import pl.widulinski.scrapp.FoundWebElements.FoundWebElement;
+
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
+
+@EqualsAndHashCode(callSuper = true)
 @Component
-public class CreateExcel {
+@Data
+public abstract class CreateWorkbook extends InsertDataToFileAndSave {
 
 
     private static final String[] columns = {"name", "price", "link"};
 
+    void newWorkbook(Stream<FoundWebElement> stream, Workbook workbook, String fileName) throws IOException {
 
-
-    public void createNewFile(Stream<FoundWebElement> stream, String shop, Categories category) throws IOException {
-
-        Workbook workbook = new XSSFWorkbook(); // new HSSFWorkbook() for generating `.xls` file
+        // new HSSFWorkbook() for generating `.xls` file
 
         /* CreationHelper helps us create instances of various things like DataFormat,
            Hyperlink, RichTextString etc, in a format (HSSF, XSSF) independent way */
@@ -56,34 +54,15 @@ public class CreateExcel {
         CellStyle dateCellStyle = workbook.createCellStyle();
         dateCellStyle.setDataFormat(createHelper.createDataFormat().getFormat("dd-MM-yyyy"));
 
-        // Create Other rows and cells with employees data
-
-        AtomicInteger rowNum = new AtomicInteger(1);
-
-
-        stream.forEach(foundWebElement -> {
-            Row row = sheet.createRow(rowNum.getAndIncrement());
-            row.createCell(0).setCellValue(foundWebElement.getName());
-            row.createCell(1).setCellValue(foundWebElement.getPrice());
-            row.createCell(2).setCellValue(foundWebElement.getLink());
-        });
-
+        newInsert(stream, workbook, fileName);
 
         // Resize all columns to fit the content size
         for (int i = 0; i < columns.length; i++) {
             sheet.autoSizeColumn(i);
+
         }
-
-        // Write the output to a file
-        String pattern = "dd.MM.yyyy";
-        String dateInString = new SimpleDateFormat(pattern).format(new Date());
-        String fileName = shop + "_" + category + "_" + dateInString;
-        FileOutputStream fileOut = new FileOutputStream(fileName +".xlsx");
-        workbook.write(fileOut);
-        fileOut.close();
-
-        // Closing the workbook
-        workbook.close();
     }
+
+    public abstract Workbook getWorkbook();
 
 }

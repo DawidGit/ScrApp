@@ -26,7 +26,7 @@ import java.util.stream.Stream;
 @Slf4j
 public class URLService extends DriverBuilder {
 
-    private int quantityOfPages = 1;
+    private int quantityOfPages = 0;
 
     private CreateExcel createExcel;
 

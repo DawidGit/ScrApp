@@ -23,8 +23,6 @@ import java.util.Date;
 
 
 @ExtendWith(SpringExtension.class)
-@AutoConfigureMockMvc
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @Slf4j
 @SpringBootTest
 public class ScrapDataTest extends DriverBuilder {

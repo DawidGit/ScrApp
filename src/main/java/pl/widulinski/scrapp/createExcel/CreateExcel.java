@@ -11,9 +11,7 @@ import java.util.stream.Stream;
 @Component
 public class CreateExcel extends CreateWorkbook {
 
-
 private final Workbook workbook = new XSSFWorkbook();
-
 
     @Override
     public void printExcel(Stream<FoundWebElement> stream, String fileName) throws IOException {

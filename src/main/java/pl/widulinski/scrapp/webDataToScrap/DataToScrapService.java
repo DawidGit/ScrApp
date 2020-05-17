@@ -5,8 +5,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class DataToScrapService {
 
-
-
 private final DataToScrapRepository dataToScrapRepository;
 
     public DataToScrapService(DataToScrapRepository dataToScrapRepository) {

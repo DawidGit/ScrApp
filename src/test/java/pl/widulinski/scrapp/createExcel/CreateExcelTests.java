@@ -22,8 +22,6 @@ import java.util.stream.Stream;
 
 
 @ExtendWith(SpringExtension.class)
-@AutoConfigureMockMvc
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @Slf4j
 @SpringBootTest
 public class CreateExcelTests {

@@ -25,10 +25,7 @@ import java.util.Set;
 @Controller
 public class URLController {
 
-
-
     private final DataToScrapService dataToScrapService;
-
 
     private final SearchDataService searchDataService;
 

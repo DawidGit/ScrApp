@@ -8,7 +8,6 @@ import javax.validation.constraints.NotEmpty;
 
 public class DataToScrapDto {
 
-
     @NotEmpty
     private String shop;
 

@@ -15,7 +15,6 @@ import java.util.stream.Stream;
 @Component
 public abstract class InsertDataToFileAndSave implements PrintToFile {
 
-
     void newInsert(Stream<FoundWebElement> stream, Workbook workbook, String fileName) throws IOException {
 
         AtomicInteger rowNum = new AtomicInteger(1);

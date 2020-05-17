@@ -16,10 +16,7 @@ import java.util.Set;
 @Service
 public class SearchDataService {
 
-
-
     private final DataToScrapRepository dataToScrapRepository;
-
 
     private final URLService urlService;
 
@@ -27,7 +24,6 @@ public class SearchDataService {
         this.dataToScrapRepository = dataToScrapRepository;
         this.urlService = urlService;
     }
-
 
     public Map<String, Set<Categories>> getDataRepository() {
 

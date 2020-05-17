@@ -16,7 +16,6 @@ import java.util.stream.Stream;
 @Data
 public abstract class CreateWorkbook extends InsertDataToFileAndSave {
 
-
     private static final String[] columns = {"name", "price", "link"};
 
     void newWorkbook(Stream<FoundWebElement> stream, Workbook workbook, String fileName) throws IOException {

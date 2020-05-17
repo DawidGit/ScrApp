@@ -22,7 +22,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ExtendWith(SpringExtension.class)
 @AutoConfigureMockMvc
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @Slf4j
 @SpringBootTest
 class TestURLController extends DriverBuilder {
@@ -30,11 +29,8 @@ class TestURLController extends DriverBuilder {
     @Autowired
     CreateExcel createExcel;
 
-
-
     @Autowired
     private MockMvc mockMvc;
-
 
 
     @Test

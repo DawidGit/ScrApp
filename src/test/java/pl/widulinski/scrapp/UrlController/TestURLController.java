@@ -9,7 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import pl.widulinski.scrapp.createExcel.CreateExcel;
-import pl.widulinski.scrapp.webDriver.DriverBuilder;
+import pl.widulinski.scrapp.webDriver.BrowserPicker;
 
 
 
@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @Slf4j
 @SpringBootTest
-class TestURLController extends DriverBuilder {
+class TestURLController extends BrowserPicker {
 
     @Autowired
     CreateExcel createExcel;

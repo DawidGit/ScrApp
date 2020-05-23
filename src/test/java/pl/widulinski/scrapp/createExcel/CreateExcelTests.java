@@ -3,15 +3,14 @@ package pl.widulinski.scrapp.createExcel;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import pl.widulinski.scrapp.FoundWebElements.FoundWebElement;
+import pl.widulinski.scrapp.ScrappedWebElement.ScrappedWebElement;
 import pl.widulinski.scrapp.testHelper.ExcelReader;
+
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -31,7 +30,6 @@ public class CreateExcelTests {
     public void testCreateExcel() throws IOException {
         //given
         CreateExcel createExcel = new CreateExcel();
-        String fileTestPath = "C:\\Users\\Dawid\\IdeaProjects\\ScrApp\\";
         String nameFileTest = "AllegroTest_Electronics_";
         String dateInString = new SimpleDateFormat("dd.MM.yyyy").format(new Date());
         String fileNameWithDate = nameFileTest + dateInString;
@@ -46,11 +44,11 @@ public class CreateExcelTests {
         articleList.add(article2);
         articleList.add(article3);
 
-        Set<FoundWebElement> foundElements = new HashSet<>();
+        Set<ScrappedWebElement> foundElements = new HashSet<>();
 
         for (String[] article : articleList
         ) {
-            FoundWebElement element = new FoundWebElement();
+            ScrappedWebElement element = new ScrappedWebElement();
             element.setName(article[0]);
             element.setPrice(article[1]);
             element.setLink(article[2]);
@@ -58,28 +56,34 @@ public class CreateExcelTests {
 
         }
 
-        Stream<FoundWebElement> streamTest = foundElements.stream();
+        Stream<ScrappedWebElement> streamTest = foundElements.stream();
 
 
         //when
 
-        createExcel.printExcel(streamTest, nameFileTest);
-        ExcelReader excelReader = new ExcelReader(fileTestPath + fileNameWithDate+ ".xlsx");
+        createExcel.newWorkbook();
+        createExcel.newInsert(streamTest);
+        createExcel.writeToXLS(nameFileTest);
+
+
+        ExcelReader excelReader = new ExcelReader(new File(fileNameWithDate+ ".xlsx").getPath());
 
         //then
 
         //comparing article1 data
-        Assertions.assertEquals(article1[0], excelReader.getWorkbook().getSheet("WebData").getRow(1).getCell(0).getStringCellValue());
-        Assertions.assertEquals(article1[1], excelReader.getWorkbook().getSheet("WebData").getRow(1).getCell(1).getStringCellValue());
-        Assertions.assertEquals(article1[2], excelReader.getWorkbook().getSheet("WebData").getRow(1).getCell(2).getStringCellValue());
+        Assertions.assertEquals(article1[0], excelReader.getCellValue("WebData",1,0));
+        Assertions.assertEquals(article1[1], excelReader.getCellValue("WebData",1,1));
+        Assertions.assertEquals(article1[2], excelReader.getCellValue("WebData",1,2));
+
         //comparing article2 data
-        Assertions.assertEquals(article2[0], excelReader.getWorkbook().getSheet("WebData").getRow(2).getCell(0).getStringCellValue());
-        Assertions.assertEquals(article2[1], excelReader.getWorkbook().getSheet("WebData").getRow(2).getCell(1).getStringCellValue());
-        Assertions.assertEquals(article2[2], excelReader.getWorkbook().getSheet("WebData").getRow(2).getCell(2).getStringCellValue());
+        Assertions.assertEquals(article2[0], excelReader.getCellValue("WebData",2,0));
+        Assertions.assertEquals(article2[1], excelReader.getCellValue("WebData",2,1));
+        Assertions.assertEquals(article2[2], excelReader.getCellValue("WebData",2,2));
+
         //comparing article3 data
-        Assertions.assertEquals(article3[0], excelReader.getWorkbook().getSheet("WebData").getRow(3).getCell(0).getStringCellValue());
-        Assertions.assertEquals(article3[1], excelReader.getWorkbook().getSheet("WebData").getRow(3).getCell(1).getStringCellValue());
-        Assertions.assertEquals(article3[2], excelReader.getWorkbook().getSheet("WebData").getRow(3).getCell(2).getStringCellValue());
+        Assertions.assertEquals(article3[0], excelReader.getCellValue("WebData",3,0));
+        Assertions.assertEquals(article3[1], excelReader.getCellValue("WebData",3,1));
+        Assertions.assertEquals(article3[2], excelReader.getCellValue("WebData",3,2));
 
         excelReader.closeWorkbook();
     }

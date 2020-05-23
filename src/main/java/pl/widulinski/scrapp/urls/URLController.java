@@ -64,7 +64,7 @@ public class URLController {
     @GetMapping("/")
     public String getUserMenu(Model model) {
 
-        model.addAttribute("shopList", searchDataService.getDataRepository());
+        model.addAttribute("shopList", searchDataService.getShopsList());
         model.addAttribute("result", new DataToSearch());
         return "index";
     }
@@ -93,7 +93,7 @@ public class URLController {
     @ResponseBody
     public Set getRegions(@RequestParam String country, Model model) {
 
-        Map<String, Set<Categories>> categories = searchDataService.getDataRepository();
+        Map<String, Set<Categories>> categories = searchDataService.getShopsList();
 
         model.addAttribute("categories", categories.get(country));
         return categories.get(country);

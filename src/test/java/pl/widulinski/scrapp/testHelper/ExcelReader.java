@@ -26,4 +26,9 @@ public class ExcelReader {
         workbook.close();
         inputStream.close();
     }
+
+    public String getCellValue(String sheet, int rowNum, int colNum) {
+
+     return workbook.getSheet(sheet).getRow(rowNum).getCell(colNum).getStringCellValue();
+    }
 }

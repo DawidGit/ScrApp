@@ -1,22 +1,20 @@
 package pl.widulinski.scrapp.scrapData;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.poi.ss.usermodel.Workbook;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import pl.widulinski.scrapp.testHelper.ExcelReader;
 import pl.widulinski.scrapp.urls.URLService;
 import pl.widulinski.scrapp.webDataToScrap.DataToScrap;
 import pl.widulinski.scrapp.webDataToScrap.DataToScrapRepository;
-import pl.widulinski.scrapp.webDriver.DriverBuilder;
+import pl.widulinski.scrapp.webDriver.BrowserPicker;
 
+
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -25,7 +23,7 @@ import java.util.Date;
 @ExtendWith(SpringExtension.class)
 @Slf4j
 @SpringBootTest
-public class ScrapDataTest extends DriverBuilder {
+public class ScrapDataTest extends BrowserPicker {
 
     @Autowired
     private DataToScrapRepository dataToScrapRepository;
@@ -35,9 +33,8 @@ public class ScrapDataTest extends DriverBuilder {
     public void testScrapData() throws IOException {
 
         //given
-        URLService urlService = new URLService(dataToScrapRepository);
+        URLService urlService = new URLService();
         Iterable<DataToScrap> areasToScrap = dataToScrapRepository.findByShop("Allegro");
-        String pathToExcel = "C:\\Users\\Dawid\\IdeaProjects\\ScrApp\\";
         String currentDate = new SimpleDateFormat("dd.MM.yyyy").format(new Date());
 
         //when
@@ -51,23 +48,36 @@ public class ScrapDataTest extends DriverBuilder {
 
         //then
 
+
         for (DataToScrap area : areasToScrap
         ) {
-            ExcelReader excelReader = new ExcelReader(pathToExcel + area.getShop() + "_" + area.getCategory() + "_" + currentDate + ".xlsx");
+            ExcelReader excelReader = new ExcelReader(new File(area.getShop() + "_" + area.getCategory() + "_" + currentDate + ".xlsx").getPath());
 
-            Workbook workbook = excelReader.getWorkbook();
+           Assertions.assertTrue(assertScrappedDataTrue(excelReader));
 
-            for (int x = 1; x < workbook.getSheet("WebData").getLastRowNum() + 1; x++) {
-                Assertions.assertFalse(workbook.getSheet("WebData").getRow(x).getCell(0).getStringCellValue().isEmpty()); //name
-                Assertions.assertFalse(workbook.getSheet("WebData").getRow(x).getCell(1).getStringCellValue().isEmpty()); //price
-
-                String text = workbook.getSheet("WebData").getRow(x).getCell(2).getStringCellValue();
-                String textFromExcel = text.substring(0,18);
-                Assertions.assertEquals("https://allegro.pl" , textFromExcel); //link
             }
 
+        }
+
+
+    boolean assertScrappedDataTrue(ExcelReader excelFile) {
+
+    boolean tempBol = true;
+
+        for (int x = 1; x < excelFile.getWorkbook().getSheet("WebData").getLastRowNum() + 1; x++) {
+
+            String text = excelFile.getCellValue("WebData", x, 2);
+            String textFromExcel = text.substring(0, 18);
+
+
+            if ( excelFile.getCellValue("WebData", x, 0).isEmpty() ||
+                    excelFile.getCellValue("WebData", x, 1).isEmpty() ||
+                    textFromExcel.equals("https://allegro.pl")) {}
+              else{ tempBol = false;}
 
         }
+            return tempBol;
     }
+
 
 }

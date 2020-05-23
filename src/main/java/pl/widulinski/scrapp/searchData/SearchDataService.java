@@ -25,7 +25,7 @@ public class SearchDataService {
         this.urlService = urlService;
     }
 
-    public Map<String, Set<Categories>> getDataRepository() {
+    public Map<String, Set<Categories>> getShopsList() {
 
         Set<DataToSearch> shopNames = new HashSet<>();
         Map<String,Set<Categories>> shopAndCategories = new HashMap<>();
@@ -54,7 +54,7 @@ public class SearchDataService {
 
     }
 
-    public void searchData (PreparedDataToSrchDto preparedDataToSrchDto) throws InterruptedException, InvalidFormatException {
+    public void searchData (PreparedDataToSrchDto preparedDataToSrchDto) {
 
         try {
 

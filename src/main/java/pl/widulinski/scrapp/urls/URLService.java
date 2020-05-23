@@ -1,18 +1,17 @@
 package pl.widulinski.scrapp.urls;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.stereotype.Service;
-import pl.widulinski.scrapp.FoundWebElements.FoundWebElement;
+import pl.widulinski.scrapp.ScrappedWebElement.ScrappedWebElement;
 import pl.widulinski.scrapp.createExcel.CreateExcel;
 import pl.widulinski.scrapp.enums.Categories;
 import pl.widulinski.scrapp.webDataToScrap.DataToScrap;
 import pl.widulinski.scrapp.webDataToScrap.DataToScrapRepository;
-import pl.widulinski.scrapp.webDriver.DriverBuilder;
+import pl.widulinski.scrapp.webDriver.BrowserPicker;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
@@ -20,17 +19,16 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 
-@EqualsAndHashCode(callSuper = true)
 @Service
 @Data
 @Slf4j
-public class URLService extends DriverBuilder {
+public class URLService extends BrowserPicker {
 
     private int quantityOfPages = 0;
 
     private CreateExcel createExcel;
 
-    private final DataToScrapRepository dataToScrapRepository;
+    private  DataToScrapRepository dataToScrapRepository;
 
 
     public void findElement(String shop, Categories category) throws IOException {
@@ -71,7 +69,7 @@ public class URLService extends DriverBuilder {
         log.info("############################# Strona wybranego sklepu załadowana ###########################");
 
 
-        Set<FoundWebElement> foundElements = new HashSet<>();
+        Set<ScrappedWebElement> foundElements = new HashSet<>();
 
         //replacing signs '|' to '''
         String replacedLastPage = foundWebElement.getXpathOfLastPage().replace("|", "'");
@@ -103,7 +101,7 @@ public class URLService extends DriverBuilder {
             for (WebElement element : webElementsList
             ) {
 
-                FoundWebElement foundElement = new FoundWebElement();
+                ScrappedWebElement foundElement = new ScrappedWebElement();
 
                 foundElement.setName(element.findElement(By.xpath("." + replacedArticleName)).getText());
                 foundElement.setLink(element.findElement(By.xpath("." + replacedArticleHref)).getAttribute("href"));
@@ -118,9 +116,12 @@ public class URLService extends DriverBuilder {
 
         driver.quit();
 
-        Stream<FoundWebElement> stream = foundElements.stream();
+        Stream<ScrappedWebElement> stream = foundElements.stream();
 
-        createExcel.printExcel(stream, fileName);
+
+      createExcel.newWorkbook();
+      createExcel.newInsert(stream);
+      createExcel.writeToXLS(fileName);
 
         log.info("Huraaa! znaleziono obiekty");
 

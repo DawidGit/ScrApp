@@ -17,7 +17,7 @@ import javax.validation.constraints.NotEmpty;
 public class DataToScrap {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "data_to_scrap_pkey")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @NotEmpty

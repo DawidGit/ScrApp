@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -11,9 +12,6 @@ import pl.widulinski.scrapp.testHelper.ExcelReader;
 import pl.widulinski.scrapp.urls.URLService;
 import pl.widulinski.scrapp.webDataToScrap.DataToScrap;
 import pl.widulinski.scrapp.webDataToScrap.DataToScrapRepository;
-import pl.widulinski.scrapp.webDriver.BrowserPicker;
-
-
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -23,17 +21,21 @@ import java.util.Date;
 @ExtendWith(SpringExtension.class)
 @Slf4j
 @SpringBootTest
-public class ScrapDataTest extends BrowserPicker {
+public class ScrapDataTest{
 
     @Autowired
     private DataToScrapRepository dataToScrapRepository;
+
+    @Autowired
+    private WebDriver browser;
+
 
 
     @Test
     public void testScrapData() throws IOException {
 
         //given
-        URLService urlService = new URLService();
+        URLService urlService = new URLService(dataToScrapRepository,browser);
         Iterable<DataToScrap> areasToScrap = dataToScrapRepository.findByShop("Allegro");
         String currentDate = new SimpleDateFormat("dd.MM.yyyy").format(new Date());
 
@@ -47,7 +49,6 @@ public class ScrapDataTest extends BrowserPicker {
         }
 
         //then
-
 
         for (DataToScrap area : areasToScrap
         ) {

@@ -10,7 +10,6 @@ import javax.persistence.Enumerated;
 import java.util.Set;
 
 
-@Component
 @Data
 public class DataToSearch {
 

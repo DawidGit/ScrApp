@@ -9,7 +9,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import pl.widulinski.scrapp.ScrappedWebElement.ScrappedWebElement;
 import pl.widulinski.scrapp.testHelper.ExcelReader;
-
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -66,24 +65,24 @@ public class CreateExcelTests {
         createExcel.writeToXLS(nameFileTest);
 
 
-        ExcelReader excelReader = new ExcelReader(new File(fileNameWithDate+ ".xlsx").getPath());
+        ExcelReader excelReader = new ExcelReader(new File(fileNameWithDate + ".xlsx").getPath());
 
         //then
 
         //comparing article1 data
-        Assertions.assertEquals(article1[0], excelReader.getCellValue("WebData",1,0));
-        Assertions.assertEquals(article1[1], excelReader.getCellValue("WebData",1,1));
-        Assertions.assertEquals(article1[2], excelReader.getCellValue("WebData",1,2));
+        Assertions.assertEquals(article1[0], excelReader.getCellValue("WebData", 1, 0));
+        Assertions.assertEquals(article1[1], excelReader.getCellValue("WebData", 1, 1));
+        Assertions.assertEquals(article1[2], excelReader.getCellValue("WebData", 1, 2));
 
         //comparing article2 data
-        Assertions.assertEquals(article2[0], excelReader.getCellValue("WebData",2,0));
-        Assertions.assertEquals(article2[1], excelReader.getCellValue("WebData",2,1));
-        Assertions.assertEquals(article2[2], excelReader.getCellValue("WebData",2,2));
+        Assertions.assertEquals(article2[0], excelReader.getCellValue("WebData", 2, 0));
+        Assertions.assertEquals(article2[1], excelReader.getCellValue("WebData", 2, 1));
+        Assertions.assertEquals(article2[2], excelReader.getCellValue("WebData", 2, 2));
 
         //comparing article3 data
-        Assertions.assertEquals(article3[0], excelReader.getCellValue("WebData",3,0));
-        Assertions.assertEquals(article3[1], excelReader.getCellValue("WebData",3,1));
-        Assertions.assertEquals(article3[2], excelReader.getCellValue("WebData",3,2));
+        Assertions.assertEquals(article3[0], excelReader.getCellValue("WebData", 3, 0));
+        Assertions.assertEquals(article3[1], excelReader.getCellValue("WebData", 3, 1));
+        Assertions.assertEquals(article3[2], excelReader.getCellValue("WebData", 3, 2));
 
         excelReader.closeWorkbook();
     }

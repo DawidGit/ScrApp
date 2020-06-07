@@ -1,0 +1,19 @@
+{
+  "properties": [
+    {
+      "name": "spring.my.property.driver-path",
+      "type": "java.lang.String",
+      "description": "Description for spring.my.property.driver-path."
+    },
+    {
+      "name": "my.web.driver.path-chrome",
+      "type": "java.lang.String",
+      "description": "Description for my.web.driver.path-chrome."
+    },
+    {
+      "name": "my.web.driver.name",
+      "type": "java.lang.String",
+      "description": "Description for my.web.driver.name."
+    }
+  ]
+    }

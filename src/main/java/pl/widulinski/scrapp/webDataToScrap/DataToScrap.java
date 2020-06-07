@@ -10,8 +10,6 @@ import javax.validation.constraints.NotEmpty;
 
 
 @Entity
-@Component
-@EqualsAndHashCode
 @Data
 @Table(name = "data_to_scrap")
 public class DataToScrap {

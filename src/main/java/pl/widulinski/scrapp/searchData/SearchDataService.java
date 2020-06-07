@@ -1,12 +1,11 @@
 package pl.widulinski.scrapp.searchData;
 
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+
 import org.springframework.stereotype.Service;
 import pl.widulinski.scrapp.enums.Categories;
 import pl.widulinski.scrapp.urls.URLService;
 import pl.widulinski.scrapp.webDataToScrap.DataToScrap;
 import pl.widulinski.scrapp.webDataToScrap.DataToScrapRepository;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;

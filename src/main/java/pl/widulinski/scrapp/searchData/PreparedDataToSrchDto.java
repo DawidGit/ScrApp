@@ -2,7 +2,6 @@ package pl.widulinski.scrapp.searchData;
 
 import lombok.Data;
 import pl.widulinski.scrapp.enums.Categories;
-
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.validation.constraints.NotEmpty;

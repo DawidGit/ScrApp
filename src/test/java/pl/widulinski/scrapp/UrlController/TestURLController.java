@@ -8,12 +8,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import pl.widulinski.scrapp.createExcel.CreateExcel;
-import pl.widulinski.scrapp.webDriver.BrowserPicker;
-
-
-
-
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -24,10 +18,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @Slf4j
 @SpringBootTest
-class TestURLController extends BrowserPicker {
+class TestURLController  {
 
-    @Autowired
-    CreateExcel createExcel;
 
     @Autowired
     private MockMvc mockMvc;

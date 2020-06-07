@@ -3,9 +3,7 @@ package pl.widulinski.scrapp.createExcel;
 
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.stereotype.Component;
 import pl.widulinski.scrapp.ScrappedWebElement.ScrappedWebElement;
-
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -13,7 +11,7 @@ import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
-@Component
+
 public class CreateExcel {
 
     private final Workbook workbook = new XSSFWorkbook();

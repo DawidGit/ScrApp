@@ -1,0 +1,8 @@
+
+insert into Data_To_Scrap(id, shop, category, url_To_Category, xpath_Of_Last_Page, xpath_To_Article_Element, xpath_To_Article_Name, xpath_To_Article_Href, xpath_To_Article_Price) values
+
+(-1, 'Allegro', 'ELECTRONICS', 'https://allegro.pl/kategoria/komputery?3=&bmatch=baseline-cl-dict43-ele-1-2-1127&p=', '//div[@class=|_1bo4a _np6in _ku8d6 _3db39_14wVQ _ymwpx _nt6qd|]/div/span', '//article/div/div','//h2/a','//h2/a','//div/div/div/div/span'),
+(-2, 'Allegro', 'FASHION', 'https://allegro.pl/kategoria/odziez-meska-1455?bmatch=al-product-eyesa2-engag-dict-fas-53-fas-1-2-0326=', '//div[@class=|_1bo4a _np6in _ku8d6 _3db39_14wVQ _ymwpx _nt6qd|]/div/span', '//article/div/div','//h2/a','//h2/a','//div/div/div/div/span'),
+(-3, 'Allegro', 'BEAUTY', 'https://allegro.pl/kategoria/pielegnacja-1430?bmatch=baseline-al-product-eyesa2-engag-dict43-bea-1-2-0321=', '//div[@class=|_1bo4a _np6in _ku8d6 _3db39_14wVQ _ymwpx _nt6qd|]/div/span', '//article/div/div','//h2/a','//h2/a','//div/div/div/div/span'),
+(-4, 'EURO', 'SMARTPHONES', 'https://www.euro.com.pl/telefony-komorkowe.bhtml?link=mainnaviB&main_cat_menu=Smartfony_i_Gadzety_Smartfony=', '//*[@id="product-list"]/div[5]/div/a[5]', '//*[@id=''products'']/div','//div/div/div/h2/a','//div/div/div/h2/a','//[2]/div/div[2]/div[3]/div[1]/div[1]/div[1]'),
+(-5, 'EURO', 'COMPUTERS', 'https://allegro.pl/kategoria/komputery?3=&bmatch=baseline-cl-dict43-ele-1-2-1127&p=', '//div[@class=|_1bo4a _np6in _ku8d6 _3db39_14wVQ _ymwpx _nt6qd|]/div/span', '//div[@class=|e05299e|]/div','//h2/a','//h2/a','//div/div/div/div/span');
